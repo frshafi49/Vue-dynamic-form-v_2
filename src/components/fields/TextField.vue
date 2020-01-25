@@ -1,7 +1,7 @@
 <template>
-  <b-form-group id="input-group-2" :label="text_field.label" label-for="input-2">
+  <b-form-group id="input-group-2" :label="text_field.label" :label-for="text_field.name">
     <b-form-input
-      id="input-2"
+      :id="text_field.name"
       v-model="val"
       @change="onInput"
       :type="text_field.type"

@@ -1,7 +1,7 @@
 <template>
-  <b-form-group id="input-group-3" :label="select_field.label" label-for="input-3">
+  <b-form-group id="input-group-3" :label="select_field.label" :label-for="select_field.name">
     <b-form-select
-      id="input-3"
+      :id="select_field.name"
       v-model="val"
       @change="onInput"
       :options="select_field.options[0]"

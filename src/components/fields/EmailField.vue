@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-    <b-form-group id="input-group-1" :label="email_field.label" label-for="input-1">
+    <b-form-group id="input-group-1" :label="email_field.label" :label-for="email_field.name">
       <b-form-input
-        id="input-1"
+        :id="email_field.name"
         v-model="val"
         @change="onInput"
         :type="email_field.type"
