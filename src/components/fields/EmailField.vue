@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <b-form-group id="input-group-1" :label="email_field.label" :label-for="email_field.name">
+    <b-form-group  :label="email_field.label" :label-for="email_field.name">
       <b-form-input
         :id="email_field.name"
         v-model="val"

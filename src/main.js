@@ -11,6 +11,9 @@ Vue.use(BootstrapVue)
 // Vue.use(Bootstrap);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+// for form validation
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
 

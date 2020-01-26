@@ -1,5 +1,5 @@
 <template>
-  <b-form-group id="input-group-3" :label="select_field.label" :label-for="select_field.name">
+  <b-form-group  :label="select_field.label" :label-for="select_field.name">
     <b-form-select
       :id="select_field.name"
       v-model="val"

@@ -3,9 +3,8 @@
     <div class="mt-4 col-md-6">
       <!-- Information field at first  -->
       <InfoField :info_field="formData[0]" />
-
       <!-- load form field based on type -->
-      <b-form @submit="onSubmit" @reset="onReset">
+      <b-form @submit.prevent="onSubmit" @reset="onReset" class="needs-validation" novalidate>
         <div v-for="(field,i) in formData" v-bind:key="i">
           <div v-if="field.type=='text'">
             <TextField :text_field="field" :form_text.sync="inputData[field.label]" />
@@ -34,17 +33,20 @@
         <b-button class="ml-2" type="reset" variant="danger">Reset</b-button>
       </b-form>
     </div>
+
     <div class="col-md-6 mt-5">
-        <table class="table table-sm table-bordered table-dark" v-if="tableData.length!=0">
-            <thead>
-                <tr><th v-for="(head,i) in getTblHeader()" v-bind:key="i">{{head}}</th></tr>
-            </thead>
-            <tbody>
-                <tr v-for="(body,i) in getTblBody()" v-bind:key="i">
-                    <td v-for="(data,j) in body" v-bind:key="j">{{data}}</td>
-                </tr>
-            </tbody>
-        </table>
+      <table class="table table-sm table-bordered table-dark" v-if="tableData.length!=0">
+        <thead>
+          <tr>
+            <th v-for="(head,i) in getTblHeader()" v-bind:key="i">{{head}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(body,i) in getTblBody()" v-bind:key="i">
+            <td v-for="(data,j) in body" v-bind:key="j">{{data}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -58,7 +60,8 @@ import SingleSelectField from "./fields/SingleSelectField";
 import MultipleSelectField from "./fields/MultipleSelectField";
 import InfoField from "./fields/InfoField";
 
-import tableMixins from '../mixins/tableMixins';
+import tableMixins from "../mixins/tableMixins";
+import { required, minLength, between } from "vuelidate/lib/validators";
 
 const defaultFormFields = {};
 let i = 0;
@@ -67,6 +70,17 @@ formData.fields.forEach(input => {
     defaultFormFields[input.label] = input.type === "multi-select" ? [] : "";
   i++;
 });
+
+let j = 0;
+const validations = {};
+formData.fields.forEach(input => {
+  if (j > 0)
+    validations[input.name] =
+      input.required === true ? { required: true } : { required: false };
+  j++;
+});
+
+console.log("validations", validations);
 
 export default {
   components: {
@@ -87,12 +101,31 @@ export default {
       submitDisabled: false
     };
   },
+  validations: {
+    ...validations
+  },
   methods: {
     onSubmit(evt) {
-      evt.preventDefault();
-      this.tableData.push(this.inputData);
-      // disabled submit button
-      this.submitDisabled = true;
+    //   this.tableData.push(this.inputData);
+    //   // disabled submit button
+    //   this.submitDisabled = true;
+
+      var forms = document.getElementsByClassName("needs-validation");
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener(
+          "submit",
+          function(event) {
+
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
     },
     onReset(evt) {
       // map inful field name
@@ -101,9 +134,9 @@ export default {
       };
       //enable submit button
       this.submitDisabled = false;
-    },
+    }
   },
-  mixins:[tableMixins]
+  mixins: [tableMixins]
 };
 </script>
 
