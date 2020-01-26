@@ -8,7 +8,6 @@
       :required="text_field.required"
       :placeholder="text_field.placeholder"
     ></b-form-input>
-    <div class="invalid-feedback">text_field.validation_message</div>
   </b-form-group>
 </template>
 
