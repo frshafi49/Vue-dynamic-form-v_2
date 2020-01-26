@@ -1,10 +1,10 @@
 <template>
-  <b-form-group id="input-group-3" :label="select_field.label" :label-for="select_field.name">
+  <b-form-group :id="select_field.name" :label="select_field.label" :label-for="select_field.name">
     <b-form-select
       :id="select_field.name"
       v-model="val"
       @change="onInput"
-      :options="select_field.options[0]"
+      :options="setOPtionWithChoose()"
       :required="select_field.required"
     ></b-form-select>
     <div class="invalid-feedback">select_field.validation_message</div>
@@ -12,6 +12,9 @@
 </template>
 
 <script>
+
+import selectMixin from '../../mixins/selectMixin';
+
 export default {
   props: {
     select_field: {
@@ -23,7 +26,7 @@ export default {
   },
   data() {
     return {
-      val: ""
+      val: ''
     };
   },
   mounted() {
@@ -37,7 +40,9 @@ export default {
     onInput() {
       this.$emit("update:form_single_select", this.val);
     }
-  }
+  },
+  mixins:[selectMixin]
+
 };
 </script>
 
