@@ -1,6 +1,10 @@
 <template>
-  <div class="container-fluid row">
+  <div class="container row">
     <div class="mt-4 col-md-6">
+      <!-- Information field at first  -->
+      <InfoField :info_field="formData[0]" />
+
+      <!-- load form field based on type -->
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
         <div v-for="(field,i) in formData" v-bind:key="i">
           <div v-if="field.type=='text'">
@@ -45,25 +49,27 @@ import EmailField from "./fields/EmailField";
 import RadioField from "./fields/RadioField";
 import SingleSelectField from "./fields/SingleSelectField";
 import MultipleSelectField from "./fields/MultipleSelectField";
+import InfoField from "./fields/InfoField";
 
-const initialFormData = {};
+const defaultFormFields = {};
 formData.fields.forEach(input => {
-  initialFormData[input.label] = input.type === "multi-select" ? [] : "";
+  defaultFormFields[input.label] = input.type === "multi-select" ? [] : "";
 });
 
 export default {
   components: {
-    EmailField,
+    InfoField,
     TextField,
+    EmailField,
     SingleSelectField,
-    RadioField,
-    MultipleSelectField
+    MultipleSelectField,
+    RadioField
   },
   data() {
     return {
       formData: formData.fields,
       inputData: {
-          ...initialFormData
+        ...defaultFormFields
       },
       tableData: [],
       show: true
@@ -78,7 +84,7 @@ export default {
     onReset(evt) {
       console.log("values", this.inputData);
       this.inputData = {
-          ...initialFormData
+        ...defaultFormFields
       };
       this.$nextTick(() => {
         this.show = true;
