@@ -8,6 +8,7 @@
       :options="select_field.options[0]"
       :required="select_field.required"
     ></b-form-select>
+    <div class="invalid-feedback">select_field.validation_message</div>
   </b-form-group>
 </template>
 

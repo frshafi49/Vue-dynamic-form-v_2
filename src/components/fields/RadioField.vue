@@ -9,8 +9,7 @@
         :value="rf"
       >{{rf}}</b-form-radio>
     </div>
-
-    <!-- <b-form-radio v-model="val" @change.native="onInput" name="some-radios" value="B">Option B</b-form-radio> -->
+    <div class="invalid-feedback">radio_field.validation_message</div>
   </b-form-group>
 </template>
 

@@ -1,11 +1,11 @@
 <template>
-  <div class="container row">
+  <div class="container-fluid row">
     <div class="mt-4 col-md-6">
       <!-- Information field at first  -->
       <InfoField :info_field="formData[0]" />
 
       <!-- load form field based on type -->
-      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form @submit="onSubmit" @reset="onReset">
         <div v-for="(field,i) in formData" v-bind:key="i">
           <div v-if="field.type=='text'">
             <TextField :text_field="field" :form_text.sync="inputData[field.label]" />
@@ -30,14 +30,22 @@
           </div>
         </div>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button :disabled="submitDisabled" type="submit" variant="primary">Submit</b-button>
         <b-button class="ml-2" type="reset" variant="danger">Reset</b-button>
       </b-form>
     </div>
-    <div class="col-md-6">
-      <b-card class="mt-3" header="Form Data Result">
-        <pre class="m-0">{{ tableData }}</pre>
-      </b-card>
+    <div v-if="tableData.length>0" class="col-md-6 mt-5">
+      <b-table
+        :head-variant="'dark'"
+        :table-variant="'info'"
+        :small="true"
+        :bordered="true"
+        :responsive="true"
+        :items="tableData"
+        caption-top
+      >
+        <template v-slot:table-caption>Form data submission table</template>
+      </b-table>
     </div>
   </div>
 </template>
@@ -52,8 +60,11 @@ import MultipleSelectField from "./fields/MultipleSelectField";
 import InfoField from "./fields/InfoField";
 
 const defaultFormFields = {};
+let i = 0;
 formData.fields.forEach(input => {
-  defaultFormFields[input.label] = input.type === "multi-select" ? [] : "";
+  if (i > 0)
+    defaultFormFields[input.label] = input.type === "multi-select" ? [] : "";
+  i++;
 });
 
 export default {
@@ -72,23 +83,23 @@ export default {
         ...defaultFormFields
       },
       tableData: [],
-      show: true
+      submitDisabled: false
     };
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      //   alert(JSON.stringify(this.inputData));
       this.tableData.push(this.inputData);
+      // disabled submit button
+      this.submitDisabled = true;
     },
     onReset(evt) {
-      console.log("values", this.inputData);
+      // map inful field name
       this.inputData = {
         ...defaultFormFields
       };
-      this.$nextTick(() => {
-        this.show = true;
-      });
+      //enable submit button
+      this.submitDisabled = false;
     }
   }
 };

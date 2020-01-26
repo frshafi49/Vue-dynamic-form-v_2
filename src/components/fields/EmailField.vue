@@ -10,7 +10,7 @@
         :placeholder="email_field.placeholder"
         aria-describedby="input-1-live-feedback"
       ></b-form-input>
-      <b-form-invalid-feedback id="input-1" >This is a required field and must be at least 3 characters.</b-form-invalid-feedback>
+      <div class="invalid-feedback">email_field.validation_message</div>
     </b-form-group>
   </div>
 </template>
