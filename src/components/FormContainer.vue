@@ -34,18 +34,17 @@
         <b-button class="ml-2" type="reset" variant="danger">Reset</b-button>
       </b-form>
     </div>
-    <div v-if="tableData.length>0" class="col-md-6 mt-5">
-      <b-table
-        :head-variant="'dark'"
-        :table-variant="'info'"
-        :small="true"
-        :bordered="true"
-        :responsive="true"
-        :items="tableData"
-        caption-top
-      >
-        <template v-slot:table-caption>Form data submission table</template>
-      </b-table>
+    <div class="col-md-6 mt-5">
+        <table class="table table-sm table-bordered table-dark" v-if="tableData.length!=0">
+            <thead>
+                <tr><th v-for="(head,i) in getTblHeader()" v-bind:key="i">{{head}}</th></tr>
+            </thead>
+            <tbody>
+                <tr v-for="(body,i) in getTblBody()" v-bind:key="i">
+                    <td v-for="(data,j) in body" v-bind:key="j">{{data}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
   </div>
 </template>
@@ -58,6 +57,8 @@ import RadioField from "./fields/RadioField";
 import SingleSelectField from "./fields/SingleSelectField";
 import MultipleSelectField from "./fields/MultipleSelectField";
 import InfoField from "./fields/InfoField";
+
+import tableMixins from '../mixins/tableMixins';
 
 const defaultFormFields = {};
 let i = 0;
@@ -100,8 +101,9 @@ export default {
       };
       //enable submit button
       this.submitDisabled = false;
-    }
-  }
+    },
+  },
+  mixins:[tableMixins]
 };
 </script>
 
